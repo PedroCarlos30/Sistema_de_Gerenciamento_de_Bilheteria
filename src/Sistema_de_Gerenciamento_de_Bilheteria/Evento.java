@@ -1,4 +1,5 @@
 package Sistema_de_Gerenciamento_de_Bilheteria;
+
 import java.util.Scanner;
 
 import Sistema_de_Gerenciamento_de_Bilheteria.DemoEvento.LoteIngresso;
@@ -10,12 +11,10 @@ import java.util.Objects;
 
 enum StatusEvento {
     AGENDADO,
-    VENDAS_ABERTAS,
     EM_ANDAMENTO,
     REALIZADO,
     CANCELADO,
     ADIADO,
-    VENDAS_ENCERRADAS
 }
 
 public class Evento {
@@ -108,31 +107,8 @@ public class Evento {
         System.out.println("Status do evento '" + this.nome + "' alterado para: " + novoStatus);
     }
 
-    public boolean publicarEvento() {
-        if (this.statusEvento == StatusEvento.VENDAS_ABERTAS) {
-            System.out.println("Evento '" + this.nome + "' já está publicando com vendas abertas.");
-            return false;
-        }
-        try {
-            alterarStatus(StatusEvento.VENDAS_ABERTAS);
-            return true;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro ao publicar evento: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean encerrarVendas() {
-        if (this.statusEvento == StatusEvento.VENDAS_ENCERRADAS || this.statusEvento == StatusEvento.REALIZADO || this.statusEvento == StatusEvento.CANCELADO) {
-            System.out.println("Vendas para o evento '" + this.nome + "' já estão encerradas ou o evento já foi realizado/cancelado.");
-            return false;
-        }
-        alterarStatus(StatusEvento.VENDAS_ENCERRADAS);
-        return true;
-    }
-
-    public List<Ingresso> obterIngressosVendidos() {
-        return new ArrayList<>(this.ingressosVendidos);
+    private List<Ingresso> obterIngressosVendidos() {
+                return new ArrayList<>(this.ingressosVendidos);
     }
 
     public double calcularReceitaTotal() {
@@ -151,31 +127,6 @@ public class Evento {
         this.statusEvento = StatusEvento.CANCELADO;
         System.out.println("Evento '" + this.nome + "' cancelado com sucesso.");
         return true;
-    }
-
-    public boolean venderIngresso(LoteIngresso lote, int quantidade) {
-        if (this.statusEvento != StatusEvento.VENDAS_ABERTAS) {
-            System.out.println("Não é possível vender ingressos para o evento '" + this.nome + "' com status: " + this.statusEvento);
-            return false;
-        }
-        if (lote == null || !this.lotesDeIngresso.contains(lote)) {
-            System.out.prinln("Lote de ingresso inválido ou não pertence a este evento.");
-            return false;
-        }
-        if (quantidade <= 0) {
-            System.out.prinln("A quantidade de ingressos para venda deve ser maior que zero.");
-            return false;
-        }
-        if (lote.venderIngresso(quantidade)) {
-            for (int i =0; i < quantidade; i++) {
-                ingressosVendidos.add(new Ingresso(lote));
-            }
-            System.out.println(quantidade + "ingressos vendidos do lote " + lote.getIdLote() + " para o evento '" + this.nome + "'.");
-            return true;
-        } else {
-            System.out.println("Não há ingressos suficientes no lote " + lote.getIdLote() + " para vender " + quantidade + ".");
-            return false;
-        }
     }
     
     @Override
@@ -223,12 +174,5 @@ public class Evento {
     }
     public List<Ingresso> getIngressosVendidos() {
         return new ArrayList<>(ingressosVendidos);
-    }
-
-    public static void main(String[] args) {
-        Organizador organizador = new Organizador("Organizador Festas S.A."); [cite: 19]
-        System.out.println(organizador);
-
-        Timestamp inicio = Timestamp.valueOf("2025-12-10 19:00:00");
     }
 }
