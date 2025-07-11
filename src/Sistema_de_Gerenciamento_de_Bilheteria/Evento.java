@@ -1,9 +1,6 @@
 package Sistema_de_Gerenciamento_de_Bilheteria;
 
 import java.util.Scanner;
-
-import Sistema_de_Gerenciamento_de_Bilheteria.DemoEvento.LoteIngresso;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
