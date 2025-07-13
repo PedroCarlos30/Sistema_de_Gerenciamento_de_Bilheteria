@@ -1,4 +1,4 @@
-package Sistema_de_Gerenciamento_de_Bilheteria;
+package br.com.bilheteria.model;
 
 public abstract class Usuario {
     protected int idUsuario;
