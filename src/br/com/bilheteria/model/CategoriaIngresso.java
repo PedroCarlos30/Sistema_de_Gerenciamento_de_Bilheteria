@@ -1,4 +1,4 @@
-package Sistema_de_Gerenciamento_de_Bilheteria;
+package br.com.bilheteria.model;
 
 public class CategoriaIngresso {
     private int idCategoria;

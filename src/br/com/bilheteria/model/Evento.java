@@ -1,4 +1,4 @@
-package br.com.bilheteria.controllers;
+package br.com.bilheteria.model;
 
 import java.util.Scanner;
 import java.sql.Timestamp;
@@ -11,7 +11,7 @@ enum StatusEvento {
     EM_ANDAMENTO,
     REALIZADO,
     CANCELADO,
-    ADIADO,
+    ADIADO, VENDAS_ABERTAS,
 }
 
 public class Evento {
