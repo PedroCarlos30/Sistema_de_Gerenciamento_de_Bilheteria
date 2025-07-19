@@ -46,8 +46,33 @@ public class Venda {
         return new Comprovante(this);
     }
 
+    // Novos getters necessários para uso em outras classes como Comprovante
+    public int getIdVenda() {
+        return idVenda;
+    }
+
+    public Timestamp getDataHoraVenda() {
+        return dataHoraVenda;
+    }
+
+    public List<ItemVenda> getItensVenda() {
+        return itensVenda;
+    }
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public String getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public String getStatusPagamento() {
+        return statusPagamento;
+    }
+
     @Override
     public String toString() {
-        return "Venda ID: " + idVenda + ", Valor: " + valorTotal + ", Status: " + statusPagamento;
+        return "Venda ID: " + idVenda + ", Valor: R$" + valorTotal + ", Status: " + statusPagamento;
     }
 }
