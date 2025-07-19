@@ -1,36 +1,28 @@
 package br.com.bilheteria.model;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Venda {
     private int idVenda;
     private Timestamp dataHoraVenda;
-    private List<ItemVenda> itensVenda;
+    private CategoriaIngresso categoria;
+    private int quantidade;
     private float valorTotal;
     private String formaPagamento;
     private String statusPagamento;
 
-    public Venda(int idVenda, Timestamp dataHoraVenda, String formaPagamento) {
+    public Venda(int idVenda, Timestamp dataHoraVenda, CategoriaIngresso categoria, int quantidade, String formaPagamento) {
         this.idVenda = idVenda;
         this.dataHoraVenda = dataHoraVenda;
+        this.categoria = categoria;
+        this.quantidade = quantidade;
         this.formaPagamento = formaPagamento;
-        this.itensVenda = new ArrayList<>();
         this.statusPagamento = "Pendente";
-    }
-
-    public void adicionarItem(ItemVenda item) {
-        this.itensVenda.add(item);
         calcularTotal();
     }
 
     public void calcularTotal() {
-        float total = 0;
-        for (ItemVenda item : itensVenda) {
-            total += item.getSubtotal();
-        }
-        this.valorTotal = total;
+        this.valorTotal = (float) (quantidade * categoria.getPrecoBase());
     }
 
     public void confirmarVenda() {
@@ -46,8 +38,44 @@ public class Venda {
         return new Comprovante(this);
     }
 
+    public int getIdVenda() {
+        return idVenda;
+    }
+
+    public Timestamp getDataHoraVenda() {
+        return dataHoraVenda;
+    }
+
+    public CategoriaIngresso getCategoria() {
+        return categoria;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public String getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public String getStatusPagamento() {
+        return statusPagamento;
+    }
+
     @Override
     public String toString() {
-        return "Venda ID: " + idVenda + ", Valor: " + valorTotal + ", Status: " + statusPagamento;
+        return "Venda{" +
+                "idVenda=" + idVenda +
+                ", dataHoraVenda=" + dataHoraVenda +
+                ", categoria=" + categoria.getNomeCategoria() +
+                ", quantidade=" + quantidade +
+                ", valorTotal=" + valorTotal +
+                ", formaPagamento='" + formaPagamento + '\'' +
+                ", statusPagamento='" + statusPagamento + '\'' +
+                '}';
     }
 }
