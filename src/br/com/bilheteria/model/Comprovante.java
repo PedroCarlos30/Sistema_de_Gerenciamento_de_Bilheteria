@@ -3,63 +3,59 @@ package br.com.bilheteria.model;
 import java.sql.Timestamp;
 
 public class Comprovante {
-    private int idComprovante;
-    private Timestamp dataHora;
-    private float valorTotal;
-    private String formaPagamento;
-    private String nomeCategoria;
-    private int quantidade;
-    private float precoUnitario;
-
-    private static int contador = 1;
+    private String idComprovante;
+    private Venda vendaAssociada;
+    private Timestamp dataEmissao;
+    private String detalhesTransacao;
+    private String codigoAutenticacao;
 
     public Comprovante(Venda venda) {
-        this.idComprovante = contador++;
-        this.dataHora = venda.getDataHoraVenda();
-        this.valorTotal = venda.getValorTotal();
-        this.formaPagamento = venda.getFormaPagamento();
-        this.nomeCategoria = venda.getCategoria().getNomeCategoria();
-        this.precoUnitario = (float) venda.getCategoria().getPrecoBase();
-        this.quantidade = venda.getQuantidade();
+        this.vendaAssociada = venda;
+        this.idComprovante = "COMP-" + venda.getIdVenda();
+        this.dataEmissao = new Timestamp(System.currentTimeMillis());
+        this.detalhesTransacao = venda.toString();
+        this.codigoAutenticacao = gerarCodigoAutenticacao();
     }
 
-    public void imprimirComprovante() {
+    private String gerarCodigoAutenticacao() {
+        return "AUTH" + System.currentTimeMillis();
+    }
+
+    public void imprimir() {
         System.out.println("====== COMPROVANTE DE VENDA ======");
         System.out.println("ID: " + idComprovante);
-        System.out.println("Data/Hora: " + dataHora);
-        System.out.println("Categoria de Ingresso: " + nomeCategoria);
-        System.out.println("Quantidade: " + quantidade);
-        System.out.println("Preço Unitário: R$" + precoUnitario);
-        System.out.println("Total: R$" + valorTotal);
-        System.out.println("Forma de Pagamento: " + formaPagamento);
+        System.out.println("Data: " + dataEmissao);
+        System.out.println("Detalhes: " + detalhesTransacao);
+        System.out.println("Código de Autenticação: " + codigoAutenticacao);
         System.out.println("==================================");
     }
 
-    public int getIdComprovante() {
+    @Override
+    public String toString() {
+        return "Comprovante{" +
+                "idComprovante='" + idComprovante + '\'' +
+                ", dataEmissao=" + dataEmissao +
+                ", codigoAutenticacao='" + codigoAutenticacao + '\'' +
+                '}';
+    }
+
+    public String getIdComprovante() {
         return idComprovante;
     }
 
-    public Timestamp getDataHora() {
-        return dataHora;
+    public Venda getVendaAssociada() {
+        return vendaAssociada;
     }
 
-    public float getValorTotal() {
-        return valorTotal;
+    public Timestamp getDataEmissao() {
+        return dataEmissao;
     }
 
-    public String getFormaPagamento() {
-        return formaPagamento;
+    public String getDetalhesTransacao() {
+        return detalhesTransacao;
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public float getPrecoUnitario() {
-        return precoUnitario;
+    public String getCodigoAutenticacao() {
+        return codigoAutenticacao;
     }
 }
