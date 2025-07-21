@@ -7,47 +7,88 @@ import java.util.List;
 public class Venda {
     private int idVenda;
     private Timestamp dataHoraVenda;
-    private List<ItemVenda> itensVenda;
+    private List<Ingresso> itens;
     private float valorTotal;
     private String formaPagamento;
-    private String statusPagamento;
+    private StatusPagamento statusPagamento;
 
     public Venda(int idVenda, Timestamp dataHoraVenda, String formaPagamento) {
         this.idVenda = idVenda;
         this.dataHoraVenda = dataHoraVenda;
         this.formaPagamento = formaPagamento;
-        this.itensVenda = new ArrayList<>();
-        this.statusPagamento = "Pendente";
+        this.statusPagamento = StatusPagamento.PENDENTE;
+        this.itens = new ArrayList<>();
     }
 
-    public void adicionarItem(ItemVenda item) {
-        this.itensVenda.add(item);
+    public boolean cancelarCompra() {
+        if (statusPagamento == StatusPagamento.CONFIRMADO) {
+            this.statusPagamento = StatusPagamento.CANCELADO;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean cancelarCompraPorId(int id) {
+        return this.idVenda == id && cancelarCompra();
+    }
+
+    public void adicionarItem(Ingresso ingresso, int quantidade) {
+        for (int i = 0; i < quantidade; i++) {
+            itens.add(ingresso);
+        }
         calcularTotal();
     }
 
     public void calcularTotal() {
         float total = 0;
-        for (ItemVenda item : itensVenda) {
-            total += item.getSubtotal();
+        for (Ingresso ingresso : itens) {
+            total += ingresso.getPrecoVenda();
         }
         this.valorTotal = total;
     }
 
     public void confirmarVenda() {
-        this.statusPagamento = "Confirmado";
+        this.statusPagamento = StatusPagamento.CONFIRMADO;
         gerarComprovante();
-    }
-
-    public void cancelarVenda() {
-        this.statusPagamento = "Cancelado";
     }
 
     public Comprovante gerarComprovante() {
         return new Comprovante(this);
     }
 
+    public int getIdVenda() {
+        return idVenda;
+    }
+
+    public Timestamp getDataHoraVenda() {
+        return dataHoraVenda;
+    }
+
+    public List<Ingresso> getItens() {
+        return itens;
+    }
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public String getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
+    }
+
     @Override
     public String toString() {
-        return "Venda ID: " + idVenda + ", Valor: " + valorTotal + ", Status: " + statusPagamento;
+        return "Venda{" +
+                "idVenda=" + idVenda +
+                ", dataHoraVenda=" + dataHoraVenda +
+                ", quantidadeItens=" + itens.size() +
+                ", valorTotal=" + valorTotal +
+                ", formaPagamento='" + formaPagamento + '\'' +
+                ", statusPagamento=" + statusPagamento +
+                '}';
     }
 }
